@@ -35,7 +35,7 @@ A cross platform serial debug tools written by python
 - [x] multiple language support
 - [x] configs save and auto load(auto save settings when exit)
 - [x] multiple character encode support(`ASII,GBK(Chinese),UTF-8,UTF-16` etc.)
-- [x] night theme and White theme(can create more theme if you want)
+- [x] multiple language support
 - [x] multiple connection type support, and support add connection plugin
   - [x] serial port
     - [x] serial auto detect, and remember last selected support
@@ -114,15 +114,25 @@ reboot #must reboot to take effect
 ### Rasberry Pi
 
 
-just open terminal, type the command below:
+Open terminal, install dependencies with package manager:
+
+```shell
+sudo apt install git python3-pyqt5 python3-numpy
 ```
-sudo apt install git
+
+> Use package manager to install pyqt5 numpy etc. This way makes install easier.
+> If you meet some error when install with `pip`, you can try to install with package manager first.
+> To find the package name, the trick is to use `sudo apt-cache search package_name | grep package_name` to search package name, then install it.
+
+
+Then install other packages with `pip`:
+```
 git clone https://github.com/Neutree/COMTool.git --depth=1
 cd COMTool
-pip3 install .
-# or
+pip3 install . --verbose
+# 或者
 # python setup.py bdist_wheel
-# sudo pip3 install dist/COMTool-*.*.*-py3-none-any.whl
+# sudo pip3 install dist/COMTool-*.*.*-py3-none-any.whl --verbose
 ```
 
 * Add current user to dialout group to avoid `sudo` command
@@ -216,6 +226,12 @@ pip install dist/COMTool-*.*.*-py3-none-any.whl
 comtool
 ```
 
+* If encounter error when install with `pip`, you can try to install with package manager first, then install with `pip` again. e.g.
+```
+sudo apt install python3-pyqt5 python3-numpy cython3
+```
+> To find the package name, the trick is to use `sudo apt-cache search package_name | grep package_name` to search package name, then install it.
+
 * By the way, you should add current user to dialout group to avoid `sudo` command
 ```shell
 sudo usermod -a -G dialout $USER
@@ -240,6 +256,12 @@ ls
 ```
 
 > It's better to create a virtual environment before pack to decrease the size of binary
+> `pip install virtualenv`
+> `virtualenv venv`
+> `source venv/bin/activate` # linux
+> `venv/Scripts/activate` # windows
+> If you encounter `running scripts is disabled on this system`, you can temporarily allow the current terminal to execute scripts `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned`
+> Then `pip install pyinstaller` and `python pack.py`
 
 
 ## Development
@@ -339,7 +361,12 @@ Run application, you will see the new translation
 
 Create a PR to merge your changes to [this repo](https://github.com/Neutree/COMTool)
 
+## Customize theme
 
+In the `assets/qss` directory under the source code or binary program directory, copy a file from `style-dark.qss` or `style-light.qss`, the file name is `style-xxx.qss`, here `xxx ` is the name of the theme, so that the software can detect the theme.
+Then modify the `qss` file according to your preferences. The syntax of `qss` is similar to `css`, but the support is not complete. Whether the `css` syntax can be used depends on the actual effect, haha.
+Add theme code is welcome!(PR)
+> In addition, the software has not been deliberately optimized for the theme, and the class and id may have been written casually, so there is no guarantee that future codes will be fully compatible with current qss.
 
 
 ## Issue and improvement
@@ -361,3 +388,11 @@ And used these open source projects as libraries:
 * [pyte](https://github.com/selectel/pyte): [LGPL 3.0](https://github.com/selectel/pyte/blob/master/LICENSE)
 * [paramiko](https://github.com/paramiko/paramiko): [LGPL 2.1](https://github.com/paramiko/paramiko/blob/main/LICENSE)
 * [pyperclip](https://github.com/asweigart/pyperclip): [BSD-3-Clause](https://github.com/asweigart/pyperclip/blob/master/LICENSE.txt)
+
+## Donate
+
+If this project helps you, you can buy me a cup of coffee
+
+![](./COMTool/assets/donate_wechat.jpg) ![](./COMTool/assets/donate_alipay.jpg)
+
+

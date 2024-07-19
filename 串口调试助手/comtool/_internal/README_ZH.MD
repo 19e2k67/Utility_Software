@@ -29,7 +29,7 @@ COMTool
 - [x] 跨平台 (Windows, Linux, macOS, Raspberry Pi)(使用 python 编写，只要你的平台支持 python)
 - [x] 可靠，界面不会卡死
 - [x] 多语言支持
-- [x] 白色主题和黑色主题切换
+- [x] 多主题支持，支持自定义主题
 - [x] 多种字符编码格式支持，比如 `ASII,GBK(Chinese),UTF-8,UTF-16` 等
 - [x] 自动保存设置（退出保存）
 - [x] 多种连接方式支持，同时支持编写连接插件
@@ -111,15 +111,24 @@ reboot #must reboot to take effect
 ### 树莓派
 
 
-只需打开终端，输入以下命令：
+打开终端，先用包管理器安装依赖：
+
+```shell
+sudo apt install git python3-pyqt5 python3-numpy
 ```
-sudo apt install git
+
+> 先用包管理器安装 pyqt5 numpy 等包更容易安装。
+> 后面如果 `pip` 安装过程中某个包遇到了错误，也可以先尝试用系统自带的包管理器安装对应的包。
+> 找到包名的技巧就是用`sudo apt-cache search 包名 | grep 包名` 来搜索包名，然后安装
+
+然后用 `pip` 安装剩下的包：
+```
 git clone https://github.com/Neutree/COMTool.git --depth=1
 cd COMTool
-pip3 install .
+pip3 install . --verbose
 # 或者
 # python setup.py bdist_wheel
-# sudo pip3 install dist/COMTool-*.*.*-py3-none-any.whl
+# sudo pip3 install dist/COMTool-*.*.*-py3-none-any.whl --verbose
 ```
 
 * 如果不想使用`sudo`命令自动软件，则需要将当前用户添加到`dialout`组
@@ -214,6 +223,13 @@ pip install dist/COMTool-*.*.*-py3-none-any.whl
 comtool
 ```
 
+* 如果 `pip` 安装过程中遇到了错误，比如最容易出错的`pyqt5`，也可以先尝试用系统自带的包管理器安装对应的包，比如
+```
+sudo apt install python3-pyqt5 python3-numpy
+```
+> 要知道包名的技巧就是用`sudo apt-cache search 包名 | grep 包名` 来搜索包名，然后安装
+
+
 * 如果不想使用`sudo`命令自动软件，则需要将当前用户添加到`dialout`组
 ```shell
 sudo usermod -a -G dialout $USER
@@ -238,6 +254,12 @@ ls
 ```
 
 > 打包前最好创建一个虚拟环境，这样打包出来的可执行文件会小很多
+> `pip install virtualenv`
+> `virtualenv venv`
+> `source venv/bin/activate` # linux
+> `venv/Scripts/activate` # windows
+> 如果遇到 `因为在此系统上禁止运行脚本`, 可以临时允许当前终端执行脚本 `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned`
+> 然后`pip install pyinstaller`，`python pack.py`。
 
 ## 开发
 
@@ -335,6 +357,13 @@ python i18n.py finish
 
 创建 PR 以将你的更改合并到 [comtool 仓库](https://github.com/Neutree/COMTool)
 
+## 自定义主题
+
+在源码或者二进制程序目录下的`assets/qss`目录中，从`style-dark.qss`或者`style-light.qss`复制一个文件，文件名为`style-xxx.qss`，这里`xxx`就是主题的名字，这样软件里就能检测到这个主题了。
+然后根据你的喜好修改`qss`文件即可， `qss`和`css`语法类似，不过支持得不是很完全，`css`语法能不能用以实际效果为准哈哈。
+欢迎提交主题代码（PR）
+> 另外软件没有为主题刻意优化过，class 和 id 可能都是随手写的，所以不保证未来的代码能完全兼容现在的 qss。
+
 
 ## 问题和意见
 
@@ -355,4 +384,10 @@ python i18n.py finish
 * [pyte](https://github.com/selectel/pyte): [LGPL 3.0](https://github.com/selectel/pyte/blob/master/LICENSE)
 * [paramiko](https://github.com/paramiko/paramiko): [LGPL 2.1](https://github.com/paramiko/paramiko/blob/main/LICENSE)
 * [pyperclip](https://github.com/asweigart/pyperclip): [BSD-3-Clause](https://github.com/asweigart/pyperclip/blob/master/LICENSE.txt)
+
+## 赞赏
+
+如果项目帮助到你了，可以请作者喝杯下午茶～
+
+![](./COMTool/assets/donate_wechat.jpg) ![](./COMTool/assets/donate_alipay.jpg)
 
